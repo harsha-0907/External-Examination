@@ -27,4 +27,4 @@ def renderFile(path: str = '', params: dict = dict()):
 
 def generateQuestions():
     easy, medium, hard = readDirectory('questions/easy'), readDirectory('questions/medium'), readDirectory('questions/hard')
-    return ['/questions/easy/' + random.choice(easy), '/questions/medium/' + random.choice(medium), '/questions/hard/' + random.choice(hard)]
+    return [random.choice(easy), random.choice(medium), random.choice(hard)]

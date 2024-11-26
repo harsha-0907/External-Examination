@@ -9,6 +9,7 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
@@ -21,7 +22,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 80%;
             text-align: center;
         }
 
@@ -31,8 +32,9 @@
         }
 
         .images-container {
-            display: flex;
+            display: block;
             justify-content: space-between;
+            margin-top: 50px;
             margin-bottom: 20px;
         }
 
@@ -41,7 +43,7 @@
         }
 
         .images-container img {
-            width: 100px;
+            width: 1000px;
             height: 100px;
             cursor: pointer;
             border-radius: 10px;
@@ -74,6 +76,22 @@
             background-color: #45a049;
         }
 
+        footer {
+            margin-top: auto;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            font-size: 14px;
+            position: fixed;
+            bottom: 0;
+        }
+
+        footer span {
+            color: #4CAF50;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -82,19 +100,26 @@
         <div class="images-container">
             <div class="image-container">
                 <img src="{easy_question}" alt="Easy" id="easy" data-question="easy">
-                <div class="label">Easy</div>
+                <div class="label" style="color: #45a049;font-size:large;">Basics of AI</div>
+                <br><br>
             </div>
             <div class="image-container">
                 <img src="{medium_question}" alt="Medium" id="medium" data-question="medium">
-                <div class="label">Medium</div>
+                <div class="label" style="color: orange;font-size:large;">AI Technics</div>
+                <br><br>
             </div>
             <div class="image-container">
                 <img src="{hard_question}" alt="Hard" id="hard" data-question="hard">
-                <div class="label">Hard</div>
+                <div class="label" style="color: red;font-size:large;">AI ALGORITHMS</div>
+                <br><br>
             </div>
         </div>
         <button type="button" id="submitBtn">Submit</button>
     </div>
+
+    <footer>
+        Created by <span>Harsha Sri Kasyap Bellala</span>, <span>Harshitha M</span>, and <span>Vamsi Krishna Peruri</span>. Licensed under Creative Commons.
+    </footer>
 
     <script>
         let selectedImages = new Set();

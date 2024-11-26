@@ -39,8 +39,10 @@ def loginPage():
 @app.get("/generate-question")
 def generateQuestion(rollNumber: str):
     if rollNumber not in generatedQuestions:
-        generatedQuestions[rollNumber] = func.generateQuestions()
-    content = func.renderFile("src/html/generate-question.html", {"easy_question": generatedQuestions[rollNumber][0], "medium_question": generatedQuestions[rollNumber][1], "hard_question": generatedQuestions[rollNumber][2]})
+        questions = func.generateQuestions()
+        generatedQuestions[rollNumber] = questions
+        questions = ['/questions/easy/' + questions[0], '/questions/medium/' + questions[1], '/questions/hard/' + questions[2]]
+    content = func.renderFile("src/html/generate-question.html", {"easy_question": questions[0], "medium_question": questions[1], "hard_question": questions[2]})
     resp =  Response(content=content, media_type="text/html")
     resp.set_cookie(key="rollNumber", value=rollNumber)
     return resp
@@ -50,14 +52,16 @@ def generateQuestion(rollNumber: str):
 def registerQuestions(question: QuestionSelection, request: Request):
     rollNumber = request.cookies.get('rollNumber')
     if question.easy and question.medium:
-        level = 1
+        level = 3
+        registeredQuestions[rollNumber] = (3, 'Q' + generatedQuestions[rollNumber][0][:-4], 'Q' + generatedQuestions[rollNumber][1][:-4])
     elif question.easy and question.hard:
         level = 2
+        registeredQuestions[rollNumber] = (2, 'Q' + generatedQuestions[rollNumber][0][:-4], 'Q' + generatedQuestions[rollNumber][2][:-4])
     elif question.medium and question.hard:
-        level = 3
-    print(rollNumber, level)
+        level = 1
+        registeredQuestions[rollNumber] = (1, 'Q' + generatedQuestions[rollNumber][1][:-4], 'Q' + generatedQuestions[rollNumber][2][:-4])
+    # print(rollNumber, level)
 
-    registeredQuestions[rollNumber] = level
     return JSONResponse(content={"message": "Selection submitted successfully!"}, status_code=200)
     
 @app.get('/get-Data')
@@ -65,12 +69,15 @@ def getExcelSheet():
     data = dict()
     data["Registered Numbers"] = registeredQuestions.keys()
     data["Level"] = []
+    data["Question-1"] = []
+    data["Question-2"] = []
     for roll in data["Registered Numbers"]:
-        data["Level"].append(registeredQuestions[roll])
+        data["Level"].append(registeredQuestions[roll][0])
+        data["Question-1"].append(registeredQuestions[roll][1])
+        data["Question-2"].append(registeredQuestions[roll][2])
     df = pd.DataFrame(data)
-    file_path = 'students.xlsx'
     df.to_excel("sheet.xlsx", index=False, engine='openpyxl')
-    return FileResponse("sheet.xlsx", media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename="students.xlsx")
+    return FileResponse("sheet.xlsx", media_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename="external-sheet.xlsx")
 
 if __name__ == "__main__":
     uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True)
