@@ -38,10 +38,12 @@ def loginPage():
 
 @app.get("/generate-question")
 def generateQuestion(rollNumber: str):
+    questions = []
     if rollNumber not in generatedQuestions:
         questions = func.generateQuestions()
         generatedQuestions[rollNumber] = questions
-        questions = ['/questions/easy/' + questions[0], '/questions/medium/' + questions[1], '/questions/hard/' + questions[2]]
+    
+    questions = ['/questions/easy/' + generatedQuestions[rollNumber][0], '/questions/medium/' + generatedQuestions[rollNumber][1], '/questions/hard/' + generatedQuestions[rollNumber][2]]
     content = func.renderFile("src/html/generate-question.html", {"easy_question": questions[0], "medium_question": questions[1], "hard_question": questions[2]})
     resp =  Response(content=content, media_type="text/html")
     resp.set_cookie(key="rollNumber", value=rollNumber)

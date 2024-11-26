@@ -32,13 +32,14 @@
             <h2>Subject Name: {subject_name}</h2>
             <form id="loginForm" action="/generate-question" method="GET">
                 <label for="rollNumber">Enter your Roll Number:</label>
-                <input type="text" id="rollNumber" name="rollNumber" required>
+                <input type="text" id="rollNumber" name="rollNumber" required minlength="10" maxlength="10" pattern="^[A-Za-z0-9]{10}$" title="Roll number must be exactly 10 characters eg: 22331axxxx">
+
                 <button type="submit">Submit</button>
             </form>
         </div>
     </div>
     <footer>
-        Created by <span>Harsha Sri Kasyap Bellala</span>, <span>Harshitha M</span>, and <span>Vamsi Krishna Peruri</span>. Licensed under Creative Commons.
+        Created by <span>Harsha</span>, <span>Harshitha M</span>, and <span>Vamsi Krishna Peruri</span><span> @ MVGR SLC</span>. Licensed under Creative Commons.
     </footer>
 </body>
 </html>
